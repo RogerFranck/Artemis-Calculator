@@ -22,9 +22,12 @@ class Operation extends Component {
         this.state = {
             De: '',
             Para: '',
-            Num:0,
-            Num2:0,
-            Res:0
+            Num:'',
+            Num2:'',
+            Res:'',
+            operation:'',
+            tipo2:'',
+            switch:0
         }
         this.handleSelect = this.handleSelect.bind(this);
         this.handleClickOperation = this.handleClickOperation.bind(this);
@@ -36,9 +39,17 @@ class Operation extends Component {
         if(isChecked){
             document.getElementById("SegundoSelect").style.display="none";
             document.getElementById("SegundoSelect2").style.display="grid";
+            this.setState({
+                switch:1,
+                Res:''
+            }) 
         }else{
             document.getElementById("SegundoSelect").style.display="grid";
             document.getElementById("SegundoSelect2").style.display="none";
+            this.setState({
+                switch:0,
+                Res:''
+            })
         }
     }
 
@@ -61,10 +72,54 @@ class Operation extends Component {
         }else if (De===2) {
             nene = parseInt(num,8);
         }else if (De===3) {
-            nene = num;
+            nene = parseInt(num,10);
         }else if (De===4) {
             nene = parseInt(num,16);
         } 
+
+        if (this.state.switch === 1 ) {
+
+            let num2 = this.state.Num2;
+            let nene2 = 0;
+            let tipo2 = this.state.tipo2;
+
+            if (tipo2===1) {
+                nene2 = parseInt(num2,2);    
+            }else if (tipo2===2) {
+                nene2 = parseInt(num2,8);
+            }else if (tipo2===3) {
+                nene2 = parseInt(num2,10);
+            }else if (tipo2===4) {
+                nene2 = parseInt(num2,16);
+            } 
+
+            // nene = numero 1 en decimal
+            // nene2 = ...
+
+            let R = 0;
+
+            if (this.state.operation===1) {
+                //suma
+                R = nene+nene2;
+            }
+            else if (this.state.operation===2) {
+                //Resta
+                R = nene-nene2;
+            }
+            else if (this.state.operation===3) {
+                //multi
+                R = nene*nene2;
+            }
+            else if (this.state.operation===4) {
+                //divi
+                R = nene/nene2;
+            }
+
+            this.setState({
+                Res: R
+            })
+
+        }else{
 
         num = nene;
         //Binario
@@ -142,7 +197,7 @@ class Operation extends Component {
                 Res:ResFinal
             })
         }
-        
+    }
 
     }
 
@@ -224,6 +279,7 @@ class Operation extends Component {
                                             variant="outlined" 
                                             type="text" 
                                             fullWidth
+                                            onChange={this.handleSelect}
                                         />                                    
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -233,6 +289,7 @@ class Operation extends Component {
                                             </InputLabel>
                                             <Select 
                                                 value={this.state.De}
+                                                onChange={this.handleSelect}
                                                 name="De"
                                             >
                                                 <MenuItem value={1}>Binario</MenuItem>
@@ -248,9 +305,9 @@ class Operation extends Component {
                                                 Operación
                                             </InputLabel>
                                             <Select 
-                                                value={this.state.Para}
+                                                value={this.state.operation}
                                                 onChange={this.handleSelect}
-                                                name="Operation"
+                                                name="operation"
                                             >
                                                 <MenuItem value={1}>Suma</MenuItem>
                                                 <MenuItem value={2}>Resta</MenuItem>
@@ -267,7 +324,7 @@ class Operation extends Component {
                                             <Select 
                                                 value={this.state.Para}
                                                 onChange={this.handleSelect}
-                                                name="Operation"
+                                                name="Para"
                                             >
                                                 <MenuItem value={1}>Binario</MenuItem>
                                                 <MenuItem value={2}>Octal</MenuItem>
@@ -281,11 +338,12 @@ class Operation extends Component {
                                     <Grid item xs={12} sm={6}>
                                         <TextField 
                                             id="coco" 
-                                            name="Num"
+                                            name="Num2"
                                             label="Numero" 
                                             variant="outlined" 
                                             type="text" 
                                             fullWidth
+                                            onChange={this.handleSelect}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -294,8 +352,9 @@ class Operation extends Component {
                                                 Tipo
                                             </InputLabel>
                                             <Select 
-                                                value={this.state.De}
-                                                name="De"
+                                                value={this.state.tipo2}
+                                                onChange={this.handleSelect}
+                                                name="tipo2"
                                             >
                                                 <MenuItem value={1}>Binario</MenuItem>
                                                 <MenuItem value={2}>Octal</MenuItem>
