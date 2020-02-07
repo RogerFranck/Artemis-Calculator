@@ -77,6 +77,8 @@ class Operation extends Component {
             nene = parseInt(num,16);
         } 
 
+        num = nene;
+
         if (this.state.switch === 1 ) {
 
             let num2 = this.state.Num2;
@@ -118,10 +120,12 @@ class Operation extends Component {
             this.setState({
                 Res: R
             })
-
-        }else{
-
-        num = nene;
+            
+                
+        num = R;
+        
+        }
+        
         //Binario
         if (Para === 1) {
             let numFinal = [];
@@ -197,8 +201,6 @@ class Operation extends Component {
                 Res:ResFinal
             })
         }
-    }
-
     }
 
     render(){
